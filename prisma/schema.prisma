@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  clerkId      String     @unique
+  email        String     @unique
+  name         String?
+  entries      Entry[]
+  todos        Todo[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  currentDraft Draft?
+  thoughts     Thought[]
+  researches   Research[]
+  planners     Planner[]
+  Journal      Journal[]
+}
+
+model Entry {
+  id           String   @id @default(cuid())
+  title        String
+  content      String   @db.Text
+  mood         Mood // Changed to Enum Mood
+  moodScore    Int // Numeric value for mood
+  moodImageUrl String? // Optional mood image URL
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Todo {
+  id        String   @id @default(cuid())
+  title     String
+  completed Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Thought {
+  id       String   @id @default(cuid())
+  title    String
+  content  String
+  tags     String[]
+  isPinned Boolean  @default(false)
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Research {
+  id      String   @id @default(cuid())
+  title   String
+  content String
+  sources Source[]
+  tags    String[]
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Source {
+  id         String   @id @default(cuid())
+  url        String
+  title      String
+  notes      String?
+  research   Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  researchId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Planner {
+  id        String    @id @default(cuid())
+  title     String
+  startDate DateTime
+  endDate   DateTime?
+  type      PlanType  @default(DAILY)
+  events    Event[]
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime?
+  isCompleted Boolean   @default(false)
+  planner     Planner   @relation(fields: [plannerId], references: [id], onDelete: Cascade)
+  plannerId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Journal {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  mood      String
+  moodScore Int
+  date      DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  tags      Tag[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  journals  Journal[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Draft {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  mood      String
+  date      DateTime
+  tags      String[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Mood {
+  HAPPY
+  SAD
+  REFLECTIVE
+  EXCITED
+  ANGRY
+  CALM
+  ANXIOUS
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PlanType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+enum CollectionType {
+  GENERAL
+  JOURNAL
+  RESEARCH
+  TASKS
+  PLANNER
+  MINDMAP
+}

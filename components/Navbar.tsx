@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, Menu, X, Book } from "lucide-react";
+import { Sun, Moon, Menu, X, Book, Folder, PenSquare, LayoutDashboard, Home, Mail, CreditCard, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { verifyUser } from "@/app/actions/user";
 
 export default function Navbar() {
   const { isSignedIn } = useUser();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hasVerified, setHasVerified] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -30,6 +32,25 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      if (isSignedIn && !hasVerified) {
+        try {
+          const result = await verifyUser();
+          if (result.success) {
+            setHasVerified(true);
+          } else {
+            console.error("Failed to verify user:", result.error);
+          }
+        } catch (error) {
+          console.error("Error verifying user:", error);
+        }
+      }
+    };
+
+    checkUserStatus();
+  }, [isSignedIn, hasVerified]);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle("dark");
@@ -40,19 +61,35 @@ export default function Navbar() {
   };
 
   const isActiveRoute = (path: string) => {
-    if (path === "/") {
+    if (path === "/" ) {
       return pathname === path;
     }
     return pathname.startsWith(path);
   };
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/docs", label: "Docs", icon: Book },
-    { href: "/contact", label: "Contact" },
-  ];
+  const isDashboard = pathname.startsWith("/dashboard") || pathname.startsWith("/collections") || pathname.startsWith("/journal");
+
+  const navLinks = isDashboard
+    ? [
+        { href: "/", label: "Home", icon: Home },
+        { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+        { href: "/docs", label: "Docs", icon: Book },
+      ]
+    : isSignedIn
+    ? [
+        { href: "/", label: "Home", icon: Home },
+        { href: "/about", label: "About", icon: Info },
+        { href: "/pricing", label: "Pricing", icon: CreditCard },
+        { href: "/docs", label: "Docs", icon: Book },
+        { href: "/contact", label: "Contact", icon: Mail },
+      ]
+    : [
+        { href: "/", label: "Home", icon: Home },
+        { href: "/about", label: "About", icon: Info },
+        { href: "/pricing", label: "Pricing", icon: CreditCard }, 
+        { href: "/docs", label: "Docs", icon: Book },
+        { href: "/contact", label: "Contact", icon: Mail },
+      ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-amber-100 dark:border-amber-900/20">
@@ -148,11 +185,45 @@ export default function Navbar() {
               )}
             </Button>
 
-            {/* Auth Buttons */}
+            {/* Auth Buttons and Dashboard Actions */}
             {isSignedIn ? (
-              <div className="hidden md:block">
+              <div className="hidden md:flex items-center space-x-4">
+                {!isDashboard ? (
+                  <Link href="/dashboard">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-900"
+                    >
+                      Go to Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/collections/">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-900"
+                      >
+                        <Folder className="h-4 w-4 mr-2" />
+                        Collections
+                      </Button>
+                    </Link>
+                    <Link href="/journal/write">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-900"
+                      >
+                        <PenSquare className="h-4 w-4 mr-2" />
+                        Write
+                      </Button>
+                    </Link>
+                  </>
+                )}
                 <UserButton
-                  afterSignOutUrl="/"
+                  
                   appearance={{
                     elements: {
                       avatarBox: "w-8 h-8",
@@ -210,7 +281,40 @@ export default function Navbar() {
                     </motion.div>
                   );
                 })}
-                {!isSignedIn && (
+                {isSignedIn ? (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2, delay: navLinks.length * 0.1 }}
+                    >
+                      <Link
+                        href="/dashboard/collections/new"
+                        onClick={handleNavigation}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-900"
+                      >
+                        <Folder className="h-4 w-4" />
+                        Collections
+                      </Link>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.2, delay: (navLinks.length + 1) * 0.1 }}
+                    >
+                      <Link
+                        href="/journal/write"
+                        onClick={handleNavigation}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-slate-900"
+                      >
+                        <PenSquare className="h-4 w-4" />
+                        Write
+                      </Link>
+                    </motion.div>
+                  </>
+                ) : (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

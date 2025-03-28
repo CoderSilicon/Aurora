@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import {
   Book,
@@ -63,8 +63,7 @@ const features = [
   {
     icon: CheckCircle,
     title: "Smart Todo",
-    description:
-      "AI-powered task management with intelligent prioritization.",
+    description: "AI-powered task management with intelligent prioritization.",
   },
 ];
 
@@ -73,9 +72,9 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
@@ -84,9 +83,9 @@ const itemVariants = {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.5
-    }
-  }
+      duration: 0.5,
+    },
+  },
 };
 
 export default function LandingPage() {
@@ -113,7 +112,9 @@ export default function LandingPage() {
         >
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={
+              isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+            }
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 josefin-700"
           >
@@ -121,15 +122,21 @@ export default function LandingPage() {
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={
+              isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+            }
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-700 dark:from-amber-100 dark:via-amber-200 dark:to-amber-300 bg-clip-text text-transparent font-medium px-4 sm:px-0"
           >
-            Elevate your note-taking with AI-powered organization. Capture ideas, create visual connections, and unlock your productivity potential.
+            Elevate your note-taking with AI-powered organization. Capture
+            ideas, create visual connections, and unlock your productivity
+            potential.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={
+              isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+            }
             transition={{ duration: 0.8, delay: 0.6 }}
             className="relative"
           >
@@ -176,7 +183,9 @@ export default function LandingPage() {
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={
+              isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+            }
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row justify-center gap-4 px-4 sm:px-0"
           >
@@ -222,7 +231,9 @@ export default function LandingPage() {
                   <h3 className="font-semibold text-lg sm:text-xl text-amber-900 dark:text-amber-100 mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-amber-700 dark:text-amber-300 text-sm sm:text-base">{feature.description}</p>
+                  <p className="text-amber-700 dark:text-amber-300 text-sm sm:text-base">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -233,14 +244,18 @@ export default function LandingPage() {
         <motion.div
           ref={kanbanRef}
           initial={{ opacity: 0, y: 20 }}
-          animate={isKanbanInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={
+            isKanbanInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+          }
           transition={{ duration: 0.8 }}
           className="mt-16 sm:mt-20 lg:mt-24"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
-              animate={isKanbanInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              animate={
+                isKanbanInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+              }
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-4 sm:space-y-6"
             >
@@ -256,21 +271,29 @@ export default function LandingPage() {
               <ul className="space-y-2 sm:space-y-3">
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">Drag-and-drop task management</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    Drag-and-drop task management
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">Customizable columns and workflows</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    Customizable columns and workflows
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">Progress tracking and analytics</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    Progress tracking and analytics
+                  </span>
                 </li>
               </ul>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              animate={isKanbanInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              animate={
+                isKanbanInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }
+              }
               transition={{ duration: 0.8, delay: 0.4 }}
               className="space-y-3 sm:space-y-4 bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 border border-amber-100 dark:border-amber-900/20"
             >
@@ -307,14 +330,18 @@ export default function LandingPage() {
         <motion.div
           ref={journalRef}
           initial={{ opacity: 0, y: 20 }}
-          animate={isJournalInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={
+            isJournalInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+          }
           transition={{ duration: 0.8 }}
           className="mt-16 sm:mt-20 lg:mt-24"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              animate={isJournalInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              animate={
+                isJournalInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }
+              }
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-3 sm:space-y-4 bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 border border-amber-100 dark:border-amber-900/20 md:order-2"
             >
@@ -335,7 +362,9 @@ export default function LandingPage() {
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
-              animate={isJournalInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              animate={
+                isJournalInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }
+              }
               transition={{ duration: 0.8, delay: 0.4 }}
               className="space-y-4 sm:space-y-6 md:order-1"
             >
@@ -351,15 +380,21 @@ export default function LandingPage() {
               <ul className="space-y-2 sm:space-y-3">
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">AI-powered task extraction</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    AI-powered task extraction
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">Smart task categorization</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    Smart task categorization
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500" />
-                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">Progress tracking</span>
+                  <span className="text-sm sm:text-base text-amber-700 dark:text-amber-300">
+                    Progress tracking
+                  </span>
                 </li>
               </ul>
             </motion.div>
@@ -377,10 +412,14 @@ export default function LandingPage() {
               Curious About Something?
             </span>
           </h2>
-          <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto relative">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full max-w-3xl mx-auto relative"
+          >
             {faqs.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
+              <AccordionItem
+                key={index}
                 value={`item-${index}`}
                 className="group transition-all duration-300 hover:scale-[1.02] my-2"
               >
@@ -406,9 +445,14 @@ export default function LandingPage() {
                 Start Mapping Your Mind Today
               </h2>
               <p className="text-base sm:text-lg text-amber-700 dark:text-amber-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0">
-                Join thousands of thinkers who have discovered the power of visual thought organization.
+                Join thousands of thinkers who have discovered the power of
+                visual thought organization.
               </p>
-              <Button size="lg" variant="default" className="animate-bounce bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="default"
+                className="animate-bounce bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white w-full sm:w-auto"
+              >
                 Begin Your Journey <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
             </CardContent>
