@@ -39,11 +39,13 @@ model Entry {
 model Todo {
   id        String   @id @default(cuid())
   title     String
-  completed Boolean  @default(false)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+  content   String   @default("")
+  priority  Priority @default(MEDIUM)
+  status    Status   @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Thought {
