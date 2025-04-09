@@ -1,9 +1,22 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, Menu, X, Book, Folder, PenSquare, LayoutDashboard, Home, Mail, CreditCard, Info } from "lucide-react";
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Book,
+  Folder,
+  PenSquare,
+  LayoutDashboard,
+  Home,
+  Mail,
+  CreditCard,
+  Info,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { verifyUser } from "@/app/actions/user";
@@ -61,13 +74,16 @@ export default function Navbar() {
   };
 
   const isActiveRoute = (path: string) => {
-    if (path === "/" ) {
+    if (path === "/") {
       return pathname === path;
     }
     return pathname.startsWith(path);
   };
 
-  const isDashboard = pathname.startsWith("/dashboard") || pathname.startsWith("/collections") || pathname.startsWith("/journal");
+  const isDashboard =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/collections") ||
+    pathname.startsWith("/journal");
 
   const navLinks = isDashboard
     ? [
@@ -76,23 +92,23 @@ export default function Navbar() {
         { href: "/docs", label: "Docs", icon: Book },
       ]
     : isSignedIn
-    ? [
-        { href: "/", label: "Home", icon: Home },
-        { href: "/about", label: "About", icon: Info },
-        { href: "/pricing", label: "Pricing", icon: CreditCard },
-        { href: "/docs", label: "Docs", icon: Book },
-        { href: "/contact", label: "Contact", icon: Mail },
-      ]
-    : [
-        { href: "/", label: "Home", icon: Home },
-        { href: "/about", label: "About", icon: Info },
-        { href: "/pricing", label: "Pricing", icon: CreditCard }, 
-        { href: "/docs", label: "Docs", icon: Book },
-        { href: "/contact", label: "Contact", icon: Mail },
-      ];
+      ? [
+          { href: "/", label: "Home", icon: Home },
+          { href: "/about", label: "About", icon: Info },
+          { href: "/pricing", label: "Pricing", icon: CreditCard },
+          { href: "/docs", label: "Docs", icon: Book },
+          { href: "/contact", label: "Contact", icon: Mail },
+        ]
+      : [
+          { href: "/", label: "Home", icon: Home },
+          { href: "/about", label: "About", icon: Info },
+          { href: "/pricing", label: "Pricing", icon: CreditCard },
+          { href: "/docs", label: "Docs", icon: Book },
+          { href: "/contact", label: "Contact", icon: Mail },
+        ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-amber-100 dark:border-amber-900/20">
+    <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-amber-100 dark:border-amber-900/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -124,7 +140,11 @@ export default function Navbar() {
                     <motion.div
                       layoutId="navbar-indicator"
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600 dark:bg-amber-400"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.6,
+                      }}
                     />
                   )}
                 </Link>
@@ -223,7 +243,6 @@ export default function Navbar() {
                   </>
                 )}
                 <UserButton
-                  
                   appearance={{
                     elements: {
                       avatarBox: "w-8 h-8",
@@ -287,7 +306,10 @@ export default function Navbar() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2, delay: navLinks.length * 0.1 }}
+                      transition={{
+                        duration: 0.2,
+                        delay: navLinks.length * 0.1,
+                      }}
                     >
                       <Link
                         href="/dashboard/collections/new"
@@ -302,7 +324,10 @@ export default function Navbar() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.2, delay: (navLinks.length + 1) * 0.1 }}
+                      transition={{
+                        duration: 0.2,
+                        delay: (navLinks.length + 1) * 0.1,
+                      }}
                     >
                       <Link
                         href="/journal/write"

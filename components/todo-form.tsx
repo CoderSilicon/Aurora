@@ -147,7 +147,10 @@ export default function TodoForm({ id }: TodoFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 bg-slate-950 text-scheme"
+    >
       {error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />

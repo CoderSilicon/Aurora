@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { collectionSchema } from "@/lib/schemas";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
-const CollectionForm = ({ onSuccess, loading, open, setOpen } :any) => {
+const CollectionForm = ({ onSuccess, loading, open, setOpen }: any) => {
   const {
     register,
     handleSubmit,
@@ -29,7 +29,9 @@ const CollectionForm = ({ onSuccess, loading, open, setOpen } :any) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Collection</DialogTitle>
+          <DialogTitle className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 bg-clip-text text-transparent font-josefin-700">
+            Create New Collection
+          </DialogTitle>
         </DialogHeader>
         {loading && (
           <div className="flex justify-center py-4">

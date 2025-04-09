@@ -48,6 +48,20 @@ model Todo {
   userId    String?
 }
 
+model KanbanTodo {
+  id        String    @id @default(cuid())
+  title     String
+  content   String    @default("")
+  priority  Priority  @default(MEDIUM)
+  status    Status    @default(PENDING)
+  mood      Mood?     @default(HAPPY)
+  dueDate   DateTime?
+  tags      String[]  @default([])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+}
+
 model Thought {
   id       String   @id @default(cuid())
   title    String
@@ -116,7 +130,7 @@ model Journal {
   id        String   @id @default(cuid())
   title     String
   content   String   @db.Text
-  mood      String
+  mood      Mood
   moodScore Int
   date      DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -155,6 +169,7 @@ enum Mood {
   ANGRY
   CALM
   ANXIOUS
+  NEUTRAL
 }
 
 enum Priority {

@@ -165,7 +165,7 @@ export default function JournalPage() {
   }));
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 josefin-700 container mx-auto py-8 px-4 dark:bg-slate-950">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-amber-800 dark:text-amber-400">
           New Journal Entry

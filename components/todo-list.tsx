@@ -110,7 +110,7 @@ export default function TodoList() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-slate-860 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 josefin-700">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="w-full sm:w-48">
           <Select value={priorityFilter} onValueChange={setPriorityFilter}>
