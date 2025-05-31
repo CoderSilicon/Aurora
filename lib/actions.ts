@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "./prisma";
+import { Mood } from "@prisma/client";
 
 export async function getJournalEntries() {
   const { userId } = await auth();
@@ -81,7 +82,7 @@ export async function createJournalEntry(data: {
     data: {
       title: data.title,
       content: data.content,
-      mood: data.mood,
+      mood: data.mood as Mood,
       moodScore: data.moodScore,
       date: new Date(data.date),
       userId: user.id,
@@ -161,7 +162,7 @@ export async function updateJournalEntry(
     data: {
       title: data.title,
       content: data.content,
-      mood: data.mood,
+      mood: data.mood as Mood,
       moodScore: data.moodScore,
       date: new Date(data.date),
       tags: {

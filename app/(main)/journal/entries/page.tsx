@@ -28,7 +28,7 @@ import {
   CalendarIcon,
   XIcon,
 } from "lucide-react";
-import { format, isAfter, isBefore, isEqual } from "date-fns";
+import { format, isAfter, isBefore, isEqual, set } from "date-fns";
 import { MOODS } from "@/data/moods";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -162,8 +162,17 @@ export default function EntriesPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto py-8 px-4">
-        <div className="flex justify-center items-center h-64">
-          <div className="text-amber-600 dark:text-amber-400">Loading...</div>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+        <div className="h-8 w-48 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+        <div className="h-10 w-32 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+          </div>
+          <div className="h-40 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-64 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+        ))}
+          </div>
         </div>
       </div>
     );
@@ -185,7 +194,10 @@ export default function EntriesPage() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => {
+              document.documentElement.classList.toggle("dark");
+setTheme(theme === "dark" ? "light" : "dark");
+            }}
             className="rounded-full"
           >
             {theme === "dark" ? (

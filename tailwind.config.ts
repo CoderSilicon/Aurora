@@ -11,16 +11,15 @@ const config: Config = {
     extend: {
       colors: {
         amber: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          100: "#f7edd9",
+          200: "#eedcb3",
+          300: "#e5ca8d",
+          400: "#dcb967",
+          500: "#b89a4c", // Original amber shade
+          600: "#997f3f",
+          700: "#796432",
+          800: "#594a25",
+          900: "#3a3018",
         },
       },
     },
@@ -28,4 +27,4 @@ const config: Config = {
   plugins: [],
 };
 
-export default config; 
+export default config;

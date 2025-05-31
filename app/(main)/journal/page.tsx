@@ -1,12 +1,15 @@
 "use client";
 
-import type React from "react";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
+import { format } from "date-fns";
+import { useEditor, EditorContent, Editor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Placeholder from '@tiptap/extension-placeholder';
+import { Link as TipTapLink } from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,48 +34,117 @@ import {
   CalendarIcon,
   PlusIcon,
   XIcon,
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Code,
+  ImageIcon,
+  Link2,
 } from "lucide-react";
-import { format } from "date-fns";
 import { MOODS } from "@/data/moods";
 import { createJournalEntry, saveDraft } from "@/lib/actions";
-import "react-quill-new/dist/quill.snow.css";
 
-// Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 export default function JournalPage() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [selectedMood, setSelectedMood] = useState<string>("NEUTRAL");
   const [date, setDate] = useState<Date>(new Date());
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isDraftSaved, setIsDraftSaved] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
   const { theme, setTheme } = useTheme();
   const router = useRouter();
 
+  // Set up TipTap Editor with basic extensions
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: MOODS[selectedMood as keyof typeof MOODS]?.prompt || "Write your thoughts here..."
+      }),
+      TipTapLink.configure({
+        openOnClick: false,
+      }),
+      Image,
+    ],
+    content: "",
+    editorProps: {
+      attributes: {
+        class: 'focus:outline-none min-h-[250px] p-4 text-gray-900 dark:text-gray-100',
+      },
+    },
+  });
+
+  const handleAIInput = async (editor: Editor | null) => {
+    if (!aiPrompt.trim() || !editor) return;
+    
+    try {
+      const response = await fetch('/api/journal/ai-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: aiPrompt,
+          currentContent: editor.getHTML()
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+  
+      const data = await response.json();
+      if (data.content && editor) {
+        editor.commands.setContent(data.content);
+        setAiPrompt(""); // Clear the input after using it
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      if (editor) {
+        editor.commands.setContent(editor.getHTML() + '\n\nFailed to get AI response. Please try again.');
+      }
+    }
+  }
+  
+
+  // Update placeholder when mood changes
+  useEffect(() => {
+    if (editor && selectedMood) {
+      // This is a simplified approach - just recreating the editor when mood changes
+      editor.commands.setContent(editor.getHTML());
+    }
+  }, [selectedMood, editor]);
+
   // Auto-save draft every 30 seconds
   useEffect(() => {
+    if (!editor) return;
+    
     const timer = setTimeout(() => {
-      if (content && !isDraftSaved) {
+      if (editor.getHTML() && !isDraftSaved) {
         handleSaveDraft();
       }
     }, 30000);
 
     return () => clearTimeout(timer);
-  }, [content, title, selectedMood, date, tags, isDraftSaved]);
+  }, [editor, title, selectedMood, date, tags, isDraftSaved]);
 
   // Load draft if it exists
   useEffect(() => {
     const loadDraft = async () => {
+      if (!editor) return;
+      
       try {
         const response = await fetch("/api/journal/draft");
         if (response.ok) {
           const data = await response.json();
           if (data.draft) {
             setTitle(data.draft.title || "");
-            setContent(data.draft.content || "");
+            editor.commands.setContent(data.draft.content || "");
             setSelectedMood(data.draft.mood || "NEUTRAL");
             setDate(data.draft.date ? new Date(data.draft.date) : new Date());
             setTags(data.draft.tags || []);
@@ -84,14 +156,18 @@ export default function JournalPage() {
       }
     };
 
-    loadDraft();
-  }, []);
+    if (editor) {
+      loadDraft();
+    }
+  }, [editor]);
 
   const handleSaveDraft = async () => {
+    if (!editor) return;
+    
     try {
       await saveDraft({
         title,
-        content,
+        content: editor.getHTML(),
         mood: selectedMood,
         date: date.toISOString(),
         tags,
@@ -104,7 +180,7 @@ export default function JournalPage() {
   };
 
   const handleSave = async () => {
-    if (!title || !content) return;
+    if (!editor || !title || editor.isEmpty) return;
 
     setIsSaving(true);
     try {
@@ -112,7 +188,7 @@ export default function JournalPage() {
 
       await createJournalEntry({
         title,
-        content,
+        content: editor.getHTML(),
         mood: selectedMood,
         moodScore: mood.score,
         date: date.toISOString(),
@@ -146,18 +222,6 @@ export default function JournalPage() {
     }
   };
 
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["blockquote", "code-block"],
-      [{ color: [] }, { background: [] }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
-
   // Convert MOODS object to array for rendering
   const moodOptions = Object.entries(MOODS).map(([key, value]) => ({
     id: key,
@@ -165,7 +229,7 @@ export default function JournalPage() {
   }));
 
   return (
-    <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 josefin-700 container mx-auto py-8 px-4 dark:bg-slate-950">
+    <div className="lexend-400 container mx-auto py-8 px-4 dark:bg-slate-950">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-amber-800 dark:text-amber-400">
           New Journal Entry
@@ -182,7 +246,10 @@ export default function JournalPage() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => {
+              document.documentElement.classList.toggle("dark");
+              setTheme(theme === "dark" ? "light" : "dark");
+            }}
             className="rounded-full"
           >
             {theme === "dark" ? (
@@ -329,20 +396,31 @@ export default function JournalPage() {
               Journal Entry
             </Label>
             <div className="min-h-[300px] rounded-md border border-amber-200 dark:border-amber-800 bg-white dark:bg-gray-800">
-              {typeof window !== "undefined" && (
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                  modules={modules}
-                  className="h-[250px] text-gray-900 dark:text-gray-100"
-                  placeholder={
-                    MOODS[selectedMood as keyof typeof MOODS]?.prompt ||
-                    "Write your thoughts here..."
-                  }
-                />
-              )}
+              {editor && <EditorToolbar editor={editor} handleAIInput={handleAIInput} />}
+              <EditorContent editor={editor} className="min-h-[250px]" />
             </div>
+            
+            {/* Add AI prompt input here */}
+            <div className="flex gap-2 mt-4">
+              <Input
+                id="ai-prompt"
+                placeholder="Enter a prompt for AI to generate journal content"
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                className="border-amber-200 dark:border-amber-800 focus:ring-amber-500"
+              />
+              <Button
+                type="button"
+                onClick={() => handleAIInput(editor)}
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 
+                          text-white shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                Generate
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Type a prompt and click Generate to create AI-powered journal content
+            </p>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
@@ -355,7 +433,7 @@ export default function JournalPage() {
           </Button>
           <Button
             onClick={handleSave}
-            disabled={isSaving || !title || !content}
+            disabled={isSaving || !title || (editor?.isEmpty ?? true)}
             className="bg-amber-600 hover:bg-amber-700 text-white"
           >
             {isSaving ? "Saving..." : "Save Entry"}
@@ -366,3 +444,93 @@ export default function JournalPage() {
     </div>
   );
 }
+
+const EditorToolbar = ({ 
+  editor, 
+  handleAIInput 
+}: { 
+  editor: Editor | null,
+  handleAIInput: (editor: Editor | null) => void 
+}) => {
+  if (!editor) {
+    return null;
+  }
+
+  return (
+    <div className="border-b border-amber-200 dark:border-amber-800 p-2 flex flex-wrap gap-1 mb-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        className={editor.isActive('bold') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <Bold className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        className={editor.isActive('italic') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <Italic className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={editor.isActive('bulletList') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <List className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={editor.isActive('orderedList') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <ListOrdered className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        className={editor.isActive('blockquote') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <Quote className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        className={editor.isActive('codeBlock') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <Code className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          const url = window.prompt('URL');
+          if (url) {
+            editor.chain().focus().setLink({ href: url }).run();
+          }
+        }}
+        className={editor.isActive('link') ? 'bg-amber-100 dark:bg-amber-900' : ''}
+      >
+        <Link2 className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          const url = window.prompt('Image URL');
+          if (url) {
+            editor.chain().focus().setImage({ src: url }).run();
+          }
+        }}
+      >
+        <ImageIcon className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+};

@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@for $weight from 100 through 700 {
+  .josefin-#{$weight} {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: $weight;
+  }
+
+  .lexend-#{$weight} {
+    font-family: 'Lexend', sans-serif;
+    font-weight: $weight;
+  }
+  .caveat-#{$weight} {
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-weight: $weight;
+    font-style: normal;
+  }
+}

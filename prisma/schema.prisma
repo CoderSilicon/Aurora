@@ -13,13 +13,9 @@ model User {
   email        String     @unique
   name         String?
   entries      Entry[]
-  todos        Todo[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   currentDraft Draft?
-  thoughts     Thought[]
-  researches   Research[]
-  planners     Planner[]
   Journal      Journal[]
 }
 
@@ -36,95 +32,6 @@ model Entry {
   updatedAt    DateTime @updatedAt
 }
 
-model Todo {
-  id        String   @id @default(cuid())
-  title     String
-  content   String   @default("")
-  priority  Priority @default(MEDIUM)
-  status    Status   @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-}
-
-model KanbanTodo {
-  id        String    @id @default(cuid())
-  title     String
-  content   String    @default("")
-  priority  Priority  @default(MEDIUM)
-  status    Status    @default(PENDING)
-  mood      Mood?     @default(HAPPY)
-  dueDate   DateTime?
-  tags      String[]  @default([])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  userId    String
-}
-
-model Thought {
-  id       String   @id @default(cuid())
-  title    String
-  content  String
-  tags     String[]
-  isPinned Boolean  @default(false)
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Research {
-  id      String   @id @default(cuid())
-  title   String
-  content String
-  sources Source[]
-  tags    String[]
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Source {
-  id         String   @id @default(cuid())
-  url        String
-  title      String
-  notes      String?
-  research   Research @relation(fields: [researchId], references: [id], onDelete: Cascade)
-  researchId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Planner {
-  id        String    @id @default(cuid())
-  title     String
-  startDate DateTime
-  endDate   DateTime?
-  type      PlanType  @default(DAILY)
-  events    Event[]
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Event {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  startTime   DateTime
-  endTime     DateTime?
-  isCompleted Boolean   @default(false)
-  planner     Planner   @relation(fields: [plannerId], references: [id], onDelete: Cascade)
-  plannerId   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
 
 model Journal {
   id        String   @id @default(cuid())
@@ -160,6 +67,9 @@ model Draft {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+
 
 enum Mood {
   HAPPY

@@ -1,18 +1,18 @@
-[
-    {
-      "q": "Is my journal data secure?",
-      "a": "Yes! We use enterprise-grade encryption and security measures to ensure your entries remain private and secure."
-    },
-    {
-      "q": "Can I organize my journal entries?",
-      "a": "Yes! Use folders, collections, and tags to keep your entries structured. You can also filter by date, mood, or collection."
-    },
-    {
-      "q": "How does the mood tracking work?",
-      "a": "Each entry can be tagged with a mood, and our analytics tool creates visual representations of your emotional journey over time."
-    },
-    {
-      "q": "Is there a mobile app?",
-      "a": "Our platform is fully responsive and works beautifully on all devices. A dedicated mobile app is coming soon!"
-    }
-  ]
+ [
+  {
+    "q": "How secure is my journal data?",
+    "a": "Your journal entries are encrypted and only accessible to you. We use industry-standard security practices to ensure your thoughts remain private."
+  },
+  {
+    "q": "Can I access my journal on multiple devices?",
+    "a": "Yes, your journal syncs across all your devices, allowing you to write and reflect wherever you are."
+  },
+  {
+    "q": "Are there any writing prompts available?",
+    "a": "We offer daily prompts to inspire your journaling practice and help you explore new perspectives."
+  },
+  {
+    "q": "Can I export my journal entries?",
+    "a": "Yes, you can export your entries in various formats including PDF and plain text for safekeeping or printing."
+  }
+]

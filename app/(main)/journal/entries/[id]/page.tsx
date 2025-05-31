@@ -117,7 +117,9 @@ export default function EntryPage({ params }: { params: { id: string } }) {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          onClick={() => {
+            document.documentElement.classList.toggle("dark");
+            setTheme(theme === "dark" ? "light" : "dark")}}
           className="rounded-full"
         >
           {theme === "dark" ? (

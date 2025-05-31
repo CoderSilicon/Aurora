@@ -36,7 +36,7 @@ import {
 import { format } from "date-fns";
 import { MOODS } from "@/data/moods";
 import { updateJournalEntry } from "@/lib/actions";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });

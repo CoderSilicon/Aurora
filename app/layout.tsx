@@ -1,13 +1,11 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import "./font/font.scss";
+import "@/font/font.scss";
 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Vector Mind | Your Writing Sanctuary",
@@ -23,10 +21,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-     <Navbar />
-            {children}
-          
+        <body className={`dark:bg-slate-950 bg-slate-50 `}>
+          <Navbar />
+          {children}
         </body>
       </html>
     </ClerkProvider>
