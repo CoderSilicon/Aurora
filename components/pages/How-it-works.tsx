@@ -60,7 +60,7 @@ function StepTile({ step }: { step: any }) {
                 <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
                     <Icon className="w-8 h-8" strokeWidth={1.5} />
                 </div>
-                <span className="text-white/60 text-sm font-medium">{step.number}</span>
+                <span className="dark:text-white/60  text-sm font-medium">{step.number}</span>
             </div>
             <div>
                 <h3 className="text-2xl font-semibold mb-2 lexend-400">{step.title}</h3>

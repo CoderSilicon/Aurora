@@ -52,12 +52,12 @@ export default function BottomNavbar() {
                 </a>
               ) : (
                 <SignInButton>
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl mt-2">
+                  <Button className="bg-amber-500  text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl mt-2">
                     Sign In
                   </Button>
                 </SignInButton>
               )}
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl mt-2">
+              <Button className="border-2 border-amber-500 from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl mt-2">
                 Contact Us
               </Button>
             </div>
@@ -129,11 +129,11 @@ export default function BottomNavbar() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Button className="bg-amber-500 text-white dark:hover:text-black px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
+                <Button className="border-2 border-amber-500 text-black dark:text-white hover:bg-amber-500 dark:hover:bg-amber-500 dark:hover:text-white hover:text-white bg-white dark:bg-gray-950/10 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
                   Contact Us
                 </Button>
                 <SignInButton>
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
+                  <Button className="bg-amber-500 dark:hover:text-black   text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105">
                     Sign In
                   </Button>
                 </SignInButton>

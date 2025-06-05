@@ -4,6 +4,8 @@ import FeaturePage from "@/components/pages/Feature";
 import FaqsPage from "@/components/pages/Faqs";
 import HeroPage from "@/components/pages/Hero";
 import HowItWorks from "@/components/pages/How-it-works";
+import UseCases from "@/components/pages/Use-Cases";
+import Testimonial from "@/components/pages/Testimonials";
 
 export default function LandingPage() {
   return (
@@ -14,7 +16,11 @@ export default function LandingPage() {
 
       <HowItWorks />
       
-      <FaqsPage />
+      <UseCases/>
+      
+      <Testimonial/>
+            <FaqsPage />
+
       
     </div>
   );
