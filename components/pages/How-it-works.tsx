@@ -26,7 +26,7 @@ export default function HowItWorks() {
     ];
 
     return (
-        <section className="py-24 px-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-950">
+        <section className="py-24 px-4 ">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-4xl font-light text-gray-900 dark:text-gray-100 mb-4 caveat-600">How It Works</h2>

@@ -56,7 +56,7 @@ export default function FeaturePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-950">
+    <div className="min-h-screen ">
       <div className="container mx-auto px-4 py-8 sm:py-16 lg:py-20">
         {/* Minimal Header */}
         <div className="text-center mb-12 sm:mb-20">

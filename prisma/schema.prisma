@@ -10,6 +10,7 @@ datasource db {
 model User {
   id           String     @id @default(cuid())
   clerkId      String     @unique
+  userPaid   Boolean    @default(false)
   email        String     @unique
   name         String?
   entries      Entry[]
@@ -82,32 +83,8 @@ enum Mood {
   NEUTRAL
 }
 
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
 
-enum Status {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
-  CANCELLED
-}
 
-enum PlanType {
-  DAILY
-  WEEKLY
-  MONTHLY
-  CUSTOM
-}
 
-enum CollectionType {
-  GENERAL
-  JOURNAL
-  RESEARCH
-  TASKS
-  PLANNER
-  MINDMAP
-}
+
+

@@ -135,7 +135,7 @@ export default function TestimonialCarousel() {
   const currentTestimonial = testimonials[currentIndex]
 
   return (
-    <div className="min-h-screen flex items-center justify-center dark:bg-gray-950">
+    <div className="min-h-screen flex items-center justify-center ">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">

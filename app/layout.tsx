@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 
 
 export const metadata: Metadata = {
-  title: "Vector Mind | Your Writing Sanctuary",
+  title: "Thynkr | Your Writing Sanctuary",
   description:
     "Capture your thoughts, organize your ideas, and unleash your creativity.",
 };
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`dark:bg-slate-950 bg-slate-50 `}>
+        <body className={`dark:bg-[#12161d] bg-slate-50 `}>
           <Navbar />
           {children}
         </body>

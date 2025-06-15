@@ -9,7 +9,7 @@ import Testimonial from "@/components/pages/Testimonials";
 
 export default function LandingPage() {
   return (
-    <div className=" bg-white dark:bg-gray-950 transition-colors duration-300 py-10">
+    <div className=" bg-white dark:bg-[#12161d] transition-colors duration-300 py-10">
       <HeroPage />
 
       <FeaturePage />

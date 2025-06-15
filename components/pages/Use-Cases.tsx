@@ -15,8 +15,8 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import JournalNavbar from "@/components/journal-navbar";
-import JournalCard from "../journal-card";
+import JournalNavbar from "@/components/useCases-navbar";
+import JournalCard from "@/components/journal-card";
 
 export default function Page() {
   const [activeFilter, setActiveFilter] = useState<string>("all");
@@ -150,7 +150,7 @@ export default function Page() {
   };
 
   return (
-    <section className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 relative overflow-hidden">
+    <section className="min-h-screen  text-gray-900 dark:text-gray-100 relative overflow-hidden">
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-6 h-8 bg-white dark:bg-gray-800 rounded-sm shadow-md opacity-20 rotate-12 animate-float"></div>
       <div className="absolute top-40 right-20 w-4 h-6 bg-white dark:bg-gray-800 rounded-sm shadow-md opacity-20 -rotate-6 animate-float-slow"></div>
