@@ -1,3 +1,4 @@
+import { Sidebar } from "lucide-react";
 import type React from "react";
 
 export default function JournalLayout({
@@ -5,9 +6,7 @@ export default function JournalLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`dark:bg-slate-950 bg-slate-50 `}>{children}</body>
-    </html>
-  );
+  return <div className={`dark:bg-[#12161d] bg-slate-50 `}>
+    <Sidebar />
+    {children}</div>;
 }

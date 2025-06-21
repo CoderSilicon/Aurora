@@ -1,139 +1,333 @@
 "use client";
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Calendar,
-  DoorOpen,
-  HelpCircle,
+  Folder,
+  FolderSearch2,
   LayoutDashboard,
-  LineChart,
+  ChevronLeft,
+  ChevronRight,
+  LockIcon,
   Menu,
-  Server,
   X,
 } from "lucide-react";
-import React, { useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import Image from "next/image";
+import gsap from "gsap";
+import Aurora from "@/assets/Aurora.svg";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const [isPaid, setisPaid] = useState<boolean>(true);
-  const [isOpen, setIsOpen] = useState(false); // toggle state
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 1024; // Collapse if width < 1024px (iPad and below)
+    }
+    return false;
+  });
 
-  const navItems = [
-    { icon: <LayoutDashboard />, text: "Dashboard", href: "/journal" },
-    { icon: <Calendar />, text: "Calendar", href: "/journal/calender" },
-    { icon: <Server />, text: "Hub", href: "/journal/hub" },
-    { icon: <LineChart />, text: "Statistics", href: "/journal/statistics" },
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsCollapsed(true);
+      } else {
+        setIsCollapsed(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(false);
+  const [isMobileMenu, setIsMobileMenu] = useState<boolean | undefined>(false);
+  const [isPaid, setIsPaid] = useState(false); // You can change this to true to test
+  const sidebarRef = useRef(null);
+  const logoRef = useRef(null);
+  const itemsRef = useRef(null);
+  const mobileButtonRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+
+  const isActive = (href: string) => pathname === href;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true); // mobile: hide sidebar
+      } else {
+        setIsMobile(false); // desktop: show sidebar
+      }
+    };
+
+    handleResize(); // initial check
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const tl = gsap.timeline({
+      defaults: { ease: "power2.inOut", duration: 0.5 },
+    });
+
+    tl.to(sidebarRef.current, { width: isCollapsed ? "5rem" : "20rem" }, 0)
+      .to(logoRef.current, { scale: isCollapsed ? 0.8 : 1, opacity: 1 }, 0)
+      .to(itemsRef.current, { opacity: 1 }, 0.1);
+  }, [isCollapsed]);
+
+  useEffect(() => {
+    const activeTab = document.querySelector(".active-tab");
+    if (activeTab) {
+      gsap.fromTo(
+        activeTab,
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }
+      );
+    }
+  }, [pathname]);
+  useEffect(() => {
+    if (mobileButtonRef.current) {
+      gsap.fromTo(
+        mobileButtonRef.current,
+        { rotate: 0, scale: 1 },
+        {
+          rotate: isMobileMenu ? 180 : 0,
+          scale: 1.1,
+          duration: 0.3,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [isMobileMenu]);
+  useEffect(() => {
+    if (mobileMenuRef.current) {
+      if (isMobileMenu) {
+        gsap.fromTo(
+          mobileMenuRef.current,
+          { y: -50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }
+        );
+      } else {
+        gsap.to(mobileMenuRef.current, {
+          y: -50,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in",
+        });
+      }
+    }
+  }, [isMobileMenu]);
+
+  const NavItems = [
+    {
+      index: 1,
+      href: "/journal",
+      logo: LayoutDashboard,
+      label: "Home",
+      locked: false,
+    },
+    {
+      index: 2,
+      href: "/journal/gallery",
+      logo: Folder,
+      label: "My Gallery",
+      locked: false,
+    },
+    {
+      index: 3,
+      href: "/journal/hub",
+      logo: FolderSearch2,
+      label: "JœrHub",
+      locked: true,
+    }, // locked
+    {
+      index: 4,
+      href: "/journal/calendar",
+      logo: Calendar,
+      label: "Calendar",
+      locked: true,
+    },
   ];
 
   return (
-    <>
-      {/* Hamburger Button */}
-      <div className="lg:hidden p-4 fixed top-0 left-0 z-50">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-black dark:text-white"
-        >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
+    <nav className="relative z-50">
+      {!isMobile && ( // Desktop only
+        <>
+          <div className="absolute top-6 -right-4 z-50">
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="bg-[#0D0F14] rounded-xl p-2 z-[60] cursor-pointer absolute top-6 -right-2  "
+              style={{ transform: "translateY(-50%)" }}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="w-5 h-5 text-white" />
+              ) : (
+                <ChevronLeft className="w-5 h-5 text-white" />
+              )}
+            </button>
+          </div>
+          {/* Sidebar */}
+          
+            <div
+              ref={sidebarRef}
+              className="h-screen w-80 bg-[#0D0F14] overflow-hidden rounded-tr-4xl rounded-br-4xl "
+            >
+              {/* Arrow Toggle */}
 
-      {/* Sidebar */}
-      <div
-        className={`
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0
-          transition-transform duration-300
-          lg:static fixed z-40 top-0 left-0
-          h-screen w-80
-          bg-white dark:bg-[#12161d]
-          border-r border-gray-200 dark:border-gray-800
-          shadow-lg lg:shadow-none
-        `}
-      >
-        <nav className="h-[97vh] md:min-h-screen flex-col flex justify-between  md:m-0   ">
-          {/* Section 1 */}
-          <section className="Sec1">
-            <div className="logo">
-              <div className="flex justify-center items-center gap-5 mt-9">
-                <div className="relative w-12 h-12">
-                  <div className="absolute bottom-0 left-0 w-12 h-12 border-4 border-black dark:border-white rounded-full" />
-                  <div className="absolute bottom-1 left-1 w-9 h-9 border-4 border-black dark:border-white rounded-full" />
-                  <div className="absolute bottom-2 left-2 w-6 h-6 border-4 border-black dark:border-white rounded-full" />
-                </div>
-                <h1 className="text-center josefinSlab-700 text-4xl font-bold text-black dark:text-white">
-                  Thynkr
-                </h1>
+              {/* Logo */}
+              <div
+                ref={logoRef}
+                className="flex items-center justify-center px-4 py-6 gap-3"
+              >
+                <Image
+                  src={Aurora}
+                  alt="Logo"
+                  width={isCollapsed ? 40 : 50}
+                  height={isCollapsed ? 40 : 50}
+                  className="transition-all duration-300"
+                />
+                {!isCollapsed && (
+                  <h1 className="text-3xl lexend-400 text-zinc-50 tracking-wide">
+                    Aurora
+                  </h1>
+                )}
               </div>
-            </div>
 
-            {/* Nav List */}
-            <div className="flex flex-col justify-between w-full p-12">
-              <ul className="flex flex-col gap-4">
-                {navItems.map((item, index) => (
-                  <div className="relative ml-8" key={index}>
-                    {pathname === item.href && (
-                      <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-2 h-8 rounded-3xl bg-black dark:bg-white shadow-inner" />
-                    )}
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-3 lexend-400 cursor-pointer text-black dark:text-white"
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.text}</span>
-                    </Link>
-                  </div>
-                ))}
+              {/* Separator */}
+              {!isCollapsed && (
+                <div className="flex justify-center items-center mb-6">
+                  <div className="w-20 h-1.5 rounded-full bg-white/20 backdrop-blur-sm shadow-lg border border-white/10" />
+                </div>
+              )}
+
+              {/* Items */}
+              <ul
+                ref={itemsRef}
+                className="flex flex-col gap-4 px-4 lexend-400 ">
+                <h3
+                  className={`text-white text-xs lexend-400 select-none ${isCollapsed ? "hidden" : ""}`}
+                >
+                  NAVIGATION
+                </h3>
+                {
+                  
+                  NavItems.map((item) => {
+                    const locked = item.locked && !isPaid;
+                    return (
+                      <Link
+                        key={item.index}
+                        href={locked ? "#" : item.href}
+                        className={`relative group block ${locked ? "pointer-events-none" : ""} `}
+                      >
+                        <div
+                          className={`flex items-center  gap-3 py-2 px-4 relative transition-all duration-300 rounded-l-[10px]
+                    ${
+                      isActive(item.href) && !locked
+                        ? "active-tab bg-white text-zinc-800 "
+                        : "text-muted-foreground hover:bg-zinc-800"
+                    }
+                    ${locked ? "opacity-50 cursor-not-allowed" : ""}
+                  `}
+                        >
+                          {/* Right curve */}
+                          {isActive(item.href) && !locked && (
+                            <div
+                              className="absolute right-[-20px] top-0 h-full w-5"
+                              style={{
+                                backgroundColor: "#fff",
+                                zIndex: "1",
+                              }}
+                            />
+                          )}
+
+                          {/* Content */}
+                          <item.logo className="w-5 h-5 z-10" />
+                          {!isCollapsed && (
+                            <p className="z-10 flex items-center gap-1">
+                              {item.label}
+                              {locked && (
+                                <span className="ml-1">
+                                  <LockIcon className="w-4 h-4 text-muted-foreground" />
+                                </span>
+                              )}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })
+                }
               </ul>
             </div>
-
-            {/* General Section */}
-            <div className="flex flex-col justify-between w-full ml-9">
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 lexend-400">
-                GENERAL
-              </div>
-              <ul className="text-sm space-y-2 text-black dark:text-white">
-                {[
-                  { icon: <HelpCircle />, text: "Help" },
-                  { icon: <DoorOpen />, text: "Logout" },
-                ].map((item, index) => (
-                  <div className="relative ml-10 mt-3" key={index}>
-                    <li className="flex items-center gap-3 lexend-400 cursor-pointer">
-                      {item.icon}
-                      <span>{item.text}</span>
-                    </li>
-                  </div>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* Section 2 - Payment Card */}
-          <section className="Sec2">
-            {isPaid && (
-              <div className="mx-4 mb-8 p-8 rounded-2xl bg-gradient-to-br from-gray-700 via-slate-800 to-zinc-900 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-                <div className="relative z-10 lexend-400">
-                  <div className="text-3xl font-extrabold tracking-tight">
-                    Pro Mode
-                  </div>
-                  <div className="text-lg mt-1 text-white/90 font-medium lexend-300">
-                    Why upgrade?
-                  </div>
-                  <p className="mt-4 text-sm text-white/80 leading-relaxed lexend-200">
-                    Unlock features that are not visible in normal mode. Get
-                    access to ... You'll find out soon!
-                  </p>
-                  <button className="mt-6 w-full py-3 rounded-3xl bg-slate-50 text-slate-900 hover:bg-slate-950 hover:text-slate-50 hover:font-bold transition-all duration-300 hover:scale-105">
-                    Upgrade to Premium
-                  </button>
-                </div>
-              </div>
+          
+        </>
+      )}
+      {isMobile && (
+        <>
+          <button
+            ref={mobileButtonRef}
+            onClick={() => setIsMobileMenu(!isMobileMenu)}
+            className="rounded-xl p-2 z-50 cursor-pointer fixed top-4 left-4"
+          >
+            {!isMobileMenu ? (
+              <Menu className="w-5 h-5" />
+            ) : (
+              <X className="w-5 h-5" />
             )}
-          </section>
-        </nav>
-      </div>
-    </>
+          </button>
+
+          {isMobileMenu && (
+            <div
+              className="fixed inset-0 z-30 bg-black/30 backdrop-blur-sm flex items-center justify-center"
+              onClick={() => setIsMobileMenu(!isMobileMenu)}
+              ref={mobileMenuRef}
+            >
+              <div
+                className="bg-[#181A20] border-2 border-zinc-700 rounded-2xl p-8 w-11/12 max-w-xs shadow-lg flex flex-col gap-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Image
+                    src={Aurora}
+                    alt="Logo"
+                    width={40}
+                    height={40}
+                    className="transition-all duration-300"
+                  />
+                  <h1 className="text-2xl lexend-400 text-zinc-50 tracking-wide">
+                    Aurora
+                  </h1>
+                </div>
+                <ul className="flex flex-col gap-4 lexend-400">
+                  {NavItems.map((item) => {
+                    const locked = item.locked && !isPaid;
+                    return (
+                      <Link
+                        key={item.index}
+                        href={locked ? "#" : item.href}
+                        className={`flex items-center gap-3 py-2 px-4 rounded-lg transition-all duration-200 ${
+                          isActive(item.href) && !locked
+                            ? "bg-white text-zinc-800"
+                            : "text-muted-foreground hover:bg-zinc-800"
+                        } ${locked ? "opacity-50 pointer-events-none" : ""}`}
+                        onClick={() => setIsMobileMenu(false)}
+                      >
+                        <item.logo className="w-5 h-5" />
+                        <span className="flex items-center gap-1">
+                          {item.label}
+                          {locked && (
+                            <LockIcon className="w-4 h-4 text-muted-foreground ml-1" />
+                          )}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </nav>
   );
 };
 
