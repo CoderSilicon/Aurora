@@ -1,12 +1,20 @@
-import { Sidebar } from "lucide-react";
-import type React from "react";
+// app/(dashboard)/layout.js  or app/dashboard/layout.js
+import AppSidebar from "@/components/journal/AppSidebar";
 
-export default function JournalLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return <div className={`dark:bg-[#12161d] bg-slate-50 `}>
-    <Sidebar />
-    {children}</div>;
+export const metadata = {
+  title: "Your Dashboard  :)",
+
+  description:
+    "Your personal dashboard for managing your journal and related features.",
+};
+
+export default function DashboardLayout({ children }) {
+  return (
+    <>
+      <div>
+        <AppSidebar />
+        {children}
+      </div>
+    </>
+  );
 }

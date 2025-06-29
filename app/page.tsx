@@ -1,15 +1,16 @@
 "use client";
 import React, { useRef } from "react";
-import FeaturePage from "@/components/pages/Feature";
-import FaqsPage from "@/components/pages/Faqs";
-import HeroPage from "@/components/pages/Hero";
-import HowItWorks from "@/components/pages/How-it-works";
-import UseCases from "@/components/pages/Use-Cases";
-import Testimonial from "@/components/pages/Testimonials";
+import FeaturePage from "@/components/layout/Feature";
+
+import HeroPage from "@/components/layout/Hero";
+import HowItWorks from "@/components/layout/How-it-works";
+import UseCases from "@/components/layout/Use-Cases";
+import Testimonial from "@/components/layout/Testimonials";
+import Footer from "@/components/layout/Footer";
 
 export default function LandingPage() {
   return (
-    <div className=" bg-white dark:bg-[#12161d] transition-colors duration-300 py-10">
+    <div className=" bg-white dark:bg-[#12161d] ">
       <HeroPage />
 
       <FeaturePage />
@@ -19,8 +20,8 @@ export default function LandingPage() {
       <UseCases/>
       
       <Testimonial/>
-            <FaqsPage />
-
+           
+           <Footer/>
       
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "./prisma";
+import { db } from "./prisma";
 import { Mood } from "@prisma/client";
 
 export async function getJournalEntries() {
@@ -12,7 +12,7 @@ export async function getJournalEntries() {
     return [];
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -20,7 +20,7 @@ export async function getJournalEntries() {
     return [];
   }
 
-  return prisma.journal.findMany({
+  return db.journal.findMany({
     where: { userId: user.id },
     orderBy: { date: "desc" },
     include: {
@@ -36,7 +36,7 @@ export async function getJournalEntryById(id: string) {
     return null;
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -44,7 +44,7 @@ export async function getJournalEntryById(id: string) {
     return null;
   }
 
-  return prisma.journal.findFirst({
+  return db.journal.findFirst({
     where: {
       id,
       userId: user.id,
@@ -69,7 +69,7 @@ export async function createJournalEntry(data: {
     throw new Error("Unauthorized");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -78,7 +78,7 @@ export async function createJournalEntry(data: {
   }
 
   // Create the journal entry with tags
-  const entry = await prisma.journal.create({
+  const entry = await db.journal.create({
     data: {
       title: data.title,
       content: data.content,
@@ -99,7 +99,7 @@ export async function createJournalEntry(data: {
   });
 
   // Clear any existing draft
-  await prisma.draft.deleteMany({
+  await db.draft.deleteMany({
     where: { userId: user.id },
   });
 
@@ -124,7 +124,7 @@ export async function updateJournalEntry(
     throw new Error("Unauthorized");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -132,7 +132,7 @@ export async function updateJournalEntry(
     throw new Error("User not found");
   }
 
-  const entry = await prisma.journal.findFirst({
+  const entry = await db.journal.findFirst({
     where: {
       id,
       userId: user.id,
@@ -147,7 +147,7 @@ export async function updateJournalEntry(
   }
 
   // Disconnect all existing tags
-  await prisma.journal.update({
+  await db.journal.update({
     where: { id },
     data: {
       tags: {
@@ -157,7 +157,7 @@ export async function updateJournalEntry(
   });
 
   // Update the entry with new tags
-  const updatedEntry = await prisma.journal.update({
+  const updatedEntry = await db.journal.update({
     where: { id },
     data: {
       title: data.title,
@@ -190,7 +190,7 @@ export async function deleteJournalEntry(id: string) {
     throw new Error("Unauthorized");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -198,7 +198,7 @@ export async function deleteJournalEntry(id: string) {
     throw new Error("User not found");
   }
 
-  const entry = await prisma.journal.findFirst({
+  const entry = await db.journal.findFirst({
     where: {
       id,
       userId: user.id,
@@ -209,7 +209,7 @@ export async function deleteJournalEntry(id: string) {
     throw new Error("Entry not found");
   }
 
-  await prisma.journal.delete({
+  await db.journal.delete({
     where: { id },
   });
 
@@ -231,7 +231,7 @@ export async function saveDraft(data: {
     throw new Error("Unauthorized");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { clerkId: userId },
   });
 
@@ -240,7 +240,7 @@ export async function saveDraft(data: {
   }
 
   // Upsert the draft (create or update)
-  const draft = await prisma.draft.upsert({
+  const draft = await db.draft.upsert({
     where: { userId: user.id },
     update: {
       title: data.title,
@@ -261,3 +261,4 @@ export async function saveDraft(data: {
 
   return draft;
 }
+

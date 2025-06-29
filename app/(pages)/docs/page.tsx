@@ -1,12 +1,15 @@
-"use client"
-import React from "react";
-import { Book, FileText, CheckSquare, Brain, LayoutDashboard, Mail, Sparkles, Lock, Calendar, BarChart2, Tag, Folder, Search, Share2, Download, Settings } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+"use client";
+import React, { useRef } from "react";
+import {
+  FileText,
+  CheckSquare,
+  Brain,
+  LayoutDashboard,
+  Sparkles,
+  Lock,
+} from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const features = [
   {
@@ -266,7 +269,7 @@ export default function DocsPage() {
   return (
     <div className="relative min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Hero Section */}
-      <motion.div
+      <motion.section
         ref={heroRef}
         initial={{ opacity: 0, y: 20 }}
         animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -294,11 +297,11 @@ export default function DocsPage() {
             </motion.p>
           </div>
         </div>
-      </motion.div>
+      </motion.section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20">
-        <motion.div
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20">
+        <motion.section
           ref={featuresRef}
           variants={containerVariants}
           initial="hidden"
@@ -306,64 +309,62 @@ export default function DocsPage() {
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {features.map((feature, index) => (
-            <motion.div
+            <motion.article
               key={index}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              className="h-full bg-white dark:bg-slate-900 border border-amber-100 dark:border-amber-900/20 hover:border-amber-200 dark:hover:border-amber-800 transition-colors rounded-xl"
             >
-              <Card className="h-full bg-white dark:bg-slate-900 border-amber-100 dark:border-amber-900/20 hover:border-amber-200 dark:hover:border-amber-800 transition-colors">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="h-12 w-12 bg-amber-100 dark:bg-amber-900/50 rounded-full flex items-center justify-center">
-                      <feature.icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-100">
-                        {feature.title}
-                      </h2>
-                      <p className="text-amber-700 dark:text-amber-300">
-                        {feature.description}
-                      </p>
-                    </div>
+              <div className="p-6">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-12 w-12 bg-amber-100 dark:bg-amber-900/50 rounded-full flex items-center justify-center">
+                    <feature.icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
                   </div>
-
-                  <div className="space-y-6">
-                    {feature.sections.map((section, sectionIndex) => (
-                      <motion.div
-                        key={sectionIndex}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={isFeaturesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                        transition={{ duration: 0.5, delay: sectionIndex * 0.1 }}
-                      >
-                        <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-3">
-                          {section.title}
-                        </h3>
-                        <ul className="space-y-2">
-                          {section.steps.map((step, stepIndex) => (
-                            <motion.li
-                              key={stepIndex}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={isFeaturesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                              transition={{ duration: 0.5, delay: (sectionIndex * 0.1) + (stepIndex * 0.05) }}
-                              className="flex items-start gap-2 text-amber-700 dark:text-amber-300"
-                            >
-                              <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
-                              <span>{step}</span>
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    ))}
+                  <div>
+                    <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-100">
+                      {feature.title}
+                    </h2>
+                    <p className="text-amber-700 dark:text-amber-300">
+                      {feature.description}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </div>
+                <div className="space-y-6">
+                  {feature.sections.map((section, sectionIndex) => (
+                    <motion.section
+                      key={sectionIndex}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={isFeaturesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                      transition={{ duration: 0.5, delay: sectionIndex * 0.1 }}
+                    >
+                      <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-3">
+                        {section.title}
+                      </h3>
+                      <ul className="space-y-2">
+                        {section.steps.map((step, stepIndex) => (
+                          <motion.li
+                            key={stepIndex}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={isFeaturesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                            transition={{ duration: 0.5, delay: (sectionIndex * 0.1) + (stepIndex * 0.05) }}
+                            className="flex items-start gap-2 text-amber-700 dark:text-amber-300"
+                          >
+                            <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
+                            <span>{step}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.section>
+                  ))}
+                </div>
+              </div>
+            </motion.article>
           ))}
-        </motion.div>
+        </motion.section>
 
         {/* Quick Reference */}
-        <motion.div
+        <motion.section
           ref={tipsRef}
           initial={{ opacity: 0, y: 20 }}
           animate={isTipsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -374,7 +375,7 @@ export default function DocsPage() {
             Quick Reference
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <motion.div
+            <motion.section
               initial={{ opacity: 0, x: -20 }}
               animate={isTipsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -386,28 +387,28 @@ export default function DocsPage() {
               <ul className="space-y-2">
                 <li className="flex items-center justify-between text-amber-700 dark:text-amber-300">
                   <span>New Note</span>
-                  <span className="font-mono">Ctrl + N</span>
+                  <kbd className="font-mono">Ctrl + N</kbd>
                 </li>
                 <li className="flex items-center justify-between text-amber-700 dark:text-amber-300">
                   <span>New Task</span>
-                  <span className="font-mono">Ctrl + T</span>
+                  <kbd className="font-mono">Ctrl + T</kbd>
                 </li>
                 <li className="flex items-center justify-between text-amber-700 dark:text-amber-300">
                   <span>New Mind Map</span>
-                  <span className="font-mono">Ctrl + M</span>
+                  <kbd className="font-mono">Ctrl + M</kbd>
                 </li>
                 <li className="flex items-center justify-between text-amber-700 dark:text-amber-300">
                   <span>Toggle Dark Mode</span>
-                  <span className="font-mono">Ctrl + D</span>
+                  <kbd className="font-mono">Ctrl + D</kbd>
                 </li>
                 <li className="flex items-center justify-between text-amber-700 dark:text-amber-300">
                   <span>Search</span>
-                  <span className="font-mono">Ctrl + K</span>
+                  <kbd className="font-mono">Ctrl + K</kbd>
                 </li>
               </ul>
-            </motion.div>
+            </motion.section>
 
-            <motion.div
+            <motion.section
               initial={{ opacity: 0, x: 20 }}
               animate={isTipsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -418,32 +419,32 @@ export default function DocsPage() {
               </h3>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-amber-700 dark:text-amber-300">
-                  <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
                   <span>Use consistent tags for better organization</span>
                 </li>
                 <li className="flex items-start gap-2 text-amber-700 dark:text-amber-300">
-                  <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
                   <span>Regularly review and update your mind maps</span>
                 </li>
                 <li className="flex items-start gap-2 text-amber-700 dark:text-amber-300">
-                  <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
                   <span>Break down complex tasks into subtasks</span>
                 </li>
                 <li className="flex items-start gap-2 text-amber-700 dark:text-amber-300">
-                  <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
                   <span>Use templates for recurring content</span>
                 </li>
                 <li className="flex items-start gap-2 text-amber-700 dark:text-amber-300">
-                  <div className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400 dark:bg-amber-500 mt-2 block" />
                   <span>Regularly backup your important notes</span>
                 </li>
               </ul>
-            </motion.div>
+            </motion.section>
           </div>
-        </motion.div>
+        </motion.section>
 
         {/* Support Section */}
-        <motion.div
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={isTipsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -455,13 +456,13 @@ export default function DocsPage() {
           <p className="text-amber-700 dark:text-amber-300 mb-8">
             Our support team is here to help you get the most out of Vector Mind.
           </p>
-          <Link href="/contact">
-            <Button className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white">
+          <Link href="/contact" legacyBehavior>
+            <a className="inline-block px-6 py-3 rounded-lg bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white font-semibold transition-colors">
               Contact Support
-            </Button>
+            </a>
           </Link>
-        </motion.div>
-      </div>
+        </motion.section>
+      </main>
     </div>
   );
-} 
+}
