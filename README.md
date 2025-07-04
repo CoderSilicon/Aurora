@@ -1,6 +1,6 @@
-# Vector Mind
+# Aurora
 
-Vector Mind is a minimalist, intuitive journal app designed to help you capture your thoughts, unleash creativity, and track your mental progress with ease. Powered by AI-driven insights, it makes journaling simple, beautiful, and meaningful.
+Aurora is a minimalist, intuitive journal app designed to help you capture your thoughts, unleash creativity, and track your mental progress with ease. Powered by AI-driven insights, it makes journaling simple, beautiful, and meaningful.
 
 ---
 
@@ -16,7 +16,7 @@ Vector Mind is a minimalist, intuitive journal app designed to help you capture 
 
 ## How It Works
 
-1. **Launch Vector Mind:** Start your journey by opening the app and penning down your thoughts.
+1. **Launch Aurora:** Start your journey by opening the app and penning down your thoughts.
 2. **Unleash Your Creativity:** Let your ideas flow naturally and expand your mind.
 3. **Celebrate Progress:** Complete entries and prepare for new breakthroughs.
 
