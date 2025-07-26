@@ -1,7 +1,7 @@
 "use client";
-import React, { useRef } from "react";
-import FeaturePage from "@/components/layout/Feature";
 
+import React from "react";
+import FeaturePage from "@/components/layout/Feature";
 import HeroPage from "@/components/layout/Hero";
 import HowItWorks from "@/components/layout/How-it-works";
 import UseCases from "@/components/layout/Use-Cases";
@@ -10,7 +10,7 @@ import Footer from "@/components/layout/Footer";
 
 export default function LandingPage() {
   return (
-    <div className=" bg-white dark:bg-[#12161d] ">
+    <div className="bg-[#e6e6e6] dark:bg-[#1a1a1a]">
       <HeroPage />
 
       <FeaturePage />
@@ -20,8 +20,8 @@ export default function LandingPage() {
       <UseCases/>
       
       <Testimonial/>
-           
-           <Footer/>
+         
+      <Footer/>
       
     </div>
   );

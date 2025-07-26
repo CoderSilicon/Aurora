@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" >
-        <body className={`dark:bg-[#12161d] bg-slate-50 `}>
+        <body className={` dark:bg-[#12161d]  `}>
           <CN />
           {children}
         </body>

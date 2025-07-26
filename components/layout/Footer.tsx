@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Linkedin, Send } from "lucide-react";
-import Image from "next/image";
-import Aurora from "@/assets/Aurora.svg";
-
 export default function Footer() {
   const container = useRef(null);
 
@@ -27,18 +24,9 @@ export default function Footer() {
 
       {/* Large Faint Aurora Background */}
       <div className="absolute inset-0 flex items-end justify-start pointer-events-none select-none">
-        <h1 className="text-[18vw] md:text-[10vw] font-bold text-gray-950 text-center leading-none tracking-tight poppins-600 pl-4 md:pl-16 dark:text-gray-100">
+        <h1 className="sebian text-[18vw] md:text-[10vw] font-bold text-gray-950 text-center leading-none tracking-tight poppins-600 pl-4 md:pl-16 dark:text-gray-100">
           Aurora
         </h1>
-        <Image
-          src={Aurora}
-          alt="Aurora "
-            width={24}
-            height={24}
-          
-          objectFit="cover"
-          className="pointer-events-none select-none dark:invert"
-        />
       </div>
 
       {/* Bottom Row */}

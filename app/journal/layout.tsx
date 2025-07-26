@@ -11,7 +11,7 @@ export const metadata = {
 export default function DashboardLayout({ children }) {
   return (
     <>
-      <div>
+      <div className=" ">
         <AppSidebar />
         {children}
       </div>

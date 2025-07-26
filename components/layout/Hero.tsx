@@ -25,7 +25,7 @@ const HeroPage = () => {
               ref={el => {
                 textRefs.current[0] = el!;
               }}
-              className="text-5xl sm:text-6xl md:text-8xl lg:text-7xl font-extrabold mb-6 sm:mb-8 lexend-400 tracking-normal leading-tight "
+              className="text-5xl sm:text-6xl md:text-8xl lg:text-7xl font-extrabold mb-6 sm:mb-8 lexend-400 tracking-normal leading-tight sebian"
             >
               Write what u desire, not what u forced to.
             </h1>
@@ -33,9 +33,9 @@ const HeroPage = () => {
               ref={el => {
               textRefs.current[1] = el!;
               }}
-              className="text-base sm:text-lg md:text-xl mb-8 sm:mb-10 text-gray-600 dark:text-gray-300 font-medium max-w-3xl mx-auto lexend-300 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl mb-8 sm:mb-10 text-gray-600 dark:text-gray-300 font-medium max-w-3xl mx-auto lexend-300 leading-relaxed sebian"
             >
-              In any realm, at any hour, in any place u desire!
+              In any realm, at any hour, in any place u desire <span className="lexend-100">!</span>
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 sm:px-0"></div>

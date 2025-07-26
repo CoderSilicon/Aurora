@@ -16,11 +16,6 @@ export default function ProjectAnalytics() {
   // Initialize with default weekly data
   const [data, setData] = useState<AnalyticsData[]>(getWeeklyData());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [customValue, setCustomValue] = useState("");
-  const [customLabel, setCustomLabel] = useState("");
-  const [customStatus, setCustomStatus] = useState<"active" | "inactive">(
-    "active"
-  );
   const [error, setError] = useState<string>("");
 
   // Calculate stats using utility function
@@ -37,11 +32,12 @@ export default function ProjectAnalytics() {
     setData(getMonthlyData());
     setIsMenuOpen(false);
   };
+  
 
   return (
     <div className="relative my-3 lexend-400">
       {/* Main Chart Container */}
-      <div className="bg-white rounded-3xl border-2 border-zinc-950  p-6 w-full max-w-2xl mx-auto">
+      <div className="bg-white rounded-3xl border-2 border-zinc-950  p-6 w-full max-w-2xl ml-16">
         {/* Header with Menu Button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-medium text-gray-900 lexend-400">
@@ -131,7 +127,7 @@ export default function ProjectAnalytics() {
                   <span className="text-gray-700 text-sm flex-1">
                     Active{" "}
                     <span className="text-zinc-950 font-medium">
-                      (Solid Green)
+                      (Solid Black)
                     </span>
                   </span>
                 </div>
